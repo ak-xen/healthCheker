@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 func main() {
 	//fmt.Println("Enter the path to the file...")
@@ -11,5 +14,16 @@ func main() {
 	}*/
 
 	urls := GetData(path)
-	fmt.Println(urls)
+
+	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
+	wg.Add(len(urls))
+	resps := make(map[string]string)
+	for _, url := range urls {
+		go getStatusCode(url, &wg, resps, &mu)
+	}
+
+	wg.Wait()
+
+	fmt.Println(resps)
 }

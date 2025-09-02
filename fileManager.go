@@ -36,6 +36,10 @@ func parseFile(file *File) []string {
 	scanner := bufio.NewScanner(fileData)
 	for scanner.Scan() {
 		line := scanner.Text()
+		if line == "" {
+
+			continue
+		}
 		urls = append(urls, strings.TrimSpace(line))
 	}
 	return urls
