@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func main() {
@@ -14,7 +18,23 @@ func main() {
 
 	var urls []string = GetData(path)
 
-	var data map[string]string = queryManager(urls)
+	var data map[string]string
 
-	fmt.Println(data)
+	ticker := time.NewTicker(5 * time.Second)
+	done := make(chan os.Signal)
+	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
+
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-done:
+			fmt.Println("Exiting...")
+			return
+		case <-ticker.C:
+			data = queryManager(urls)
+			fmt.Println(data)
+		}
+	}
+
 }
