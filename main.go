@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
 
 func main() {
@@ -13,17 +12,9 @@ func main() {
 		return
 	}*/
 
-	urls := GetData(path)
+	var urls []string = GetData(path)
 
-	wg := sync.WaitGroup{}
-	mu := sync.Mutex{}
-	wg.Add(len(urls))
-	resps := make(map[string]string)
-	for _, url := range urls {
-		go getStatusCode(url, &wg, resps, &mu)
-	}
+	var data map[string]string = queryManager(urls)
 
-	wg.Wait()
-
-	fmt.Println(resps)
+	fmt.Println(data)
 }

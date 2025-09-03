@@ -6,6 +6,21 @@ import (
 	"sync"
 )
 
+func queryManager(urls []string) map[string]string {
+	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
+	wg.Add(len(urls))
+
+	responses := make(map[string]string)
+	for _, url := range urls {
+		go getStatusCode(url, &wg, responses, &mu)
+	}
+
+	wg.Wait()
+	return responses
+
+}
+
 func getStatusCode(url string, wg *sync.WaitGroup, resps map[string]string, mutex *sync.Mutex) {
 	defer wg.Done()
 	resp, err := http.Get(url)
