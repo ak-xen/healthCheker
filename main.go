@@ -20,7 +20,7 @@ func main() {
 
 	var urls []string = GetData(path)
 
-	var data map[string]string
+	var data map[string]int
 
 	ticker := time.NewTicker(3 * time.Second)
 	done := make(chan os.Signal)
@@ -35,9 +35,16 @@ func main() {
 		case <-ticker.C:
 			data = queryManager(urls)
 			for k, v := range data {
-				color.Red.Print(k)
+
+				color.Blue.Print(k)
 				fmt.Print(":")
-				color.Green.Println(v)
+
+				if isRightCode(v) {
+					color.Green.Println(v)
+				} else {
+					color.Red.Println(v)
+				}
+
 			}
 		}
 	}

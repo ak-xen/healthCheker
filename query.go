@@ -2,16 +2,15 @@ package main
 
 import (
 	"net/http"
-	"strconv"
 	"sync"
 )
 
-func queryManager(urls []string) map[string]string {
+func queryManager(urls []string) map[string]int {
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
 	wg.Add(len(urls))
 
-	responses := make(map[string]string)
+	responses := make(map[string]int)
 	for _, url := range urls {
 		go getStatusCode(url, &wg, responses, &mu)
 	}
@@ -21,7 +20,7 @@ func queryManager(urls []string) map[string]string {
 
 }
 
-func getStatusCode(url string, wg *sync.WaitGroup, resps map[string]string, mutex *sync.Mutex) {
+func getStatusCode(url string, wg *sync.WaitGroup, resps map[string]int, mutex *sync.Mutex) {
 	defer wg.Done()
 	resp, err := http.Get(url)
 	if err != nil {
@@ -29,6 +28,6 @@ func getStatusCode(url string, wg *sync.WaitGroup, resps map[string]string, mute
 	}
 	defer resp.Body.Close()
 	mutex.Lock()
-	resps[url] = strconv.Itoa(resp.StatusCode)
+	resps[url] = resp.StatusCode
 	mutex.Unlock()
 }
