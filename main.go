@@ -6,6 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gookit/color"
 )
 
 func main() {
@@ -20,12 +22,11 @@ func main() {
 
 	var data map[string]string
 
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(3 * time.Second)
 	done := make(chan os.Signal)
 	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
 
 	defer ticker.Stop()
-
 	for {
 		select {
 		case <-done:
@@ -33,7 +34,11 @@ func main() {
 			return
 		case <-ticker.C:
 			data = queryManager(urls)
-			fmt.Println(data)
+			for k, v := range data {
+				color.Red.Print(k)
+				fmt.Print(":")
+				color.Green.Println(v)
+			}
 		}
 	}
 
