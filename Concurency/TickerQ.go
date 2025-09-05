@@ -1,4 +1,4 @@
-package main
+package Concurency
 
 import (
 	"fmt"
@@ -6,17 +6,12 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/ak-xen/healthCheker/Query"
+	"github.com/ak-xen/healthCheker/Ui"
 )
 
-func main() {
-	//fmt.Println("Enter the path to the file...")
-	var path string = "urls.txt"
-	/*_, err := fmt.Scan(&path)
-	if err != nil {
-		return
-	}*/
-
-	var urls []string = GetData(path)
+func GetAndDrawData(urls []string) {
 
 	var data map[string]int
 
@@ -30,10 +25,9 @@ func main() {
 			fmt.Println("Exiting...")
 			return
 		case <-ticker.C:
-			data = queryManager(urls)
-			drawTable(data)
+			data = Query.QueryManager(urls)
+			Ui.DrawTable(data)
 
 		}
 	}
-
 }

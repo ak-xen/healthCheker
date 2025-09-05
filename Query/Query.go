@@ -1,11 +1,11 @@
-package main
+package Query
 
 import (
 	"net/http"
 	"sync"
 )
 
-func queryManager(urls []string) map[string]int {
+func QueryManager(urls []string) map[string]int {
 	wg := sync.WaitGroup{}
 	mu := sync.Mutex{}
 	wg.Add(len(urls))

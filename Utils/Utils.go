@@ -1,6 +1,6 @@
-package main
+package Utils
 
-func isRightCode(v int) bool {
+func IsRightCode(v int) bool {
 	if v == 200 || v == 209 {
 		return true
 	}
