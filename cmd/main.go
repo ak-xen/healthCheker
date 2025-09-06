@@ -1,19 +1,17 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/ak-xen/healthCheker/Concurency"
 	"github.com/ak-xen/healthCheker/FileManager"
 )
 
 func main() {
-	//fmt.Println("Enter the path to the file...")
-	var path string = "urls.txt"
-	/*_, err := fmt.Scan(&path)
-	if err != nil {
-		return
-	}*/
 
-	var urls []string = FileManager.GetData(path)
+	var pathToFile = flag.String("path", "urls.txt", "pathToFile to file")
+	flag.Parse()
+	var urls []string = FileManager.GetData(*pathToFile)
 	Concurency.GetAndDrawData(urls)
 
 }

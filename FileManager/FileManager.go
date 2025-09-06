@@ -20,11 +20,10 @@ func (f *File) ReadFile(filename string) {
 
 }
 
-func GetData(path string) []string {
+func GetData(pathToFile string) []string {
 
 	file := new(File)
-
-	file.ReadFile(path)
+	file.ReadFile(pathToFile)
 
 	return parseFile(file)
 
