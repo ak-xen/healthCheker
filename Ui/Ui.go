@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ak-xen/healthCheker/Utils"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
 )
@@ -34,10 +33,11 @@ func DrawTable(data map[string]int) {
 
 	for k, v := range data {
 		cKey := colorKey.Sprint(k)
-		if Utils.IsRightCode(v) {
+		if v != 0 {
 			t.AppendRow(table.Row{cKey, colorValue.Sprint(v)})
 		} else {
 			t.AppendRow(table.Row{cKey, color404.Sprint("404 Not Found")})
+
 		}
 	}
 
