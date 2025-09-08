@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/ak-xen/healthCheker/Query"
+	"github.com/ak-xen/healthCheker/TelegramBot"
 	"github.com/ak-xen/healthCheker/Ui"
 )
 
@@ -23,6 +24,8 @@ func GetAndDrawData(urls []string) {
 		select {
 		case <-done:
 			fmt.Println("Exiting...")
+			go TelegramBot.SendMessageBot("Script stop execution.... Exiting")
+			time.Sleep(1 * time.Second)
 			return
 		case <-ticker.C:
 			data = Query.QueryManager(urls)

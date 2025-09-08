@@ -1,11 +1,13 @@
 package Query
 
 import (
+	"fmt"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/ak-xen/healthCheker/FileManager"
+	"github.com/ak-xen/healthCheker/TelegramBot"
 	"github.com/ak-xen/healthCheker/Utils"
 )
 
@@ -30,7 +32,9 @@ func getStatusCode(url string, wg *sync.WaitGroup, resps map[string]int, mutex *
 	timeQuery := now.Format("2006-01-02 15:04:05")
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		TelegramBot.SendMessageBot(fmt.Sprintf("Can not connecting this %s", url))
+		FileManager.LogAccessDenied(url, timeQuery)
+		return
 	}
 	defer resp.Body.Close()
 	mutex.Lock()

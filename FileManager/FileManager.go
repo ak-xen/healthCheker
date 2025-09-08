@@ -25,11 +25,11 @@ func GetData(pathToFile string) []string {
 	file := new(File)
 	file.ReadFile(pathToFile)
 
-	return parseFile(file)
+	return ParseFile(file)
 
 }
 
-func parseFile(file *File) []string {
+func ParseFile(file *File) []string {
 	var urls []string
 	fileData := file.Data
 	scanner := bufio.NewScanner(fileData)
