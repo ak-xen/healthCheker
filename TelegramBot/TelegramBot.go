@@ -10,7 +10,8 @@ import (
 )
 
 func SendMessageBot(text string) {
-	err := godotenv.Load()
+	err := godotenv.Load("cmd/.env")
+
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
